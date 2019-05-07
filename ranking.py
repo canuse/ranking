@@ -59,7 +59,7 @@ class ranking():
                 self.ranking[i][1] = self.ranking[i - 1][1]
         return self.ranking
 
-    def colley(self)-> np.array:
+    def colley(self) -> np.array:
         """
         The Colley Ranking.
         Returns the item name, ranking and the score.
@@ -69,7 +69,7 @@ class ranking():
         self.ranking = []
         score_list = np.ones(self.item_num)
         for i in range(self.item_num):
-            self.item_mat[i][i]=2
+            self.item_mat[i][i] = 2
         for i in self.record_list:
             if i[2] == i[3]:
                 # Throw away draw games
@@ -92,3 +92,10 @@ class ranking():
             if i > 0 and self.ranking[i][2] == self.ranking[i - 1][2]:
                 self.ranking[i][1] = self.ranking[i - 1][1]
         return self.ranking
+
+    def find_dup(self) -> None:
+        for i in self.record_list:
+            if i[2] == i[3]:
+                self.record_list.append([i[0], i[1], i[2] + 0.5, i[2] - 0.5])
+                self.record_list.append([i[1], i[0], i[2] + 0.5, i[2] - 0.5])
+

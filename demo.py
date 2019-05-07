@@ -2,7 +2,7 @@ import ranking
 
 if __name__ == "__main__":
     a = ranking.ranking([
-        ['a', 'b', 5, 4],
+        ['a', 'b', 5, 5],
         ['a', 'c', 5, 3],
         ['b', 'c', 4, 3],
         ['a', 'c', 5, 3],
@@ -15,3 +15,7 @@ if __name__ == "__main__":
     ])
     print(a.massey())
     print(a.colley())
+    a.find_dup()
+    print(a.massey())
+    print(a.colley())
+
