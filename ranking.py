@@ -30,6 +30,8 @@ class ranking():
         Returns the item name, ranking and the score.
         """
         # We first init the Massey matrix
+        self.item_mat = np.zeros(shape=(self.item_num, self.item_num))
+        self.ranking = []
         score_list = np.zeros(self.item_num)
         for i in self.record_list:
             if i[2] == i[3]:
@@ -46,6 +48,40 @@ class ranking():
         # replace the last line with 1
         self.item_mat[-1] = np.ones(self.item_num)
         score_list[-1] = 0
+        # solve the matrix
+        score = np.linalg.solve(self.item_mat, score_list)
+        for i in range(self.item_num):
+            self.ranking.append([self.all_item[i], 0, score[i]])
+        self.ranking.sort(key=lambda x: x[-1], reverse=True)
+        for i in range(self.item_num):
+            self.ranking[i][1] = i + 1
+            if i > 0 and self.ranking[i][2] == self.ranking[i - 1][2]:
+                self.ranking[i][1] = self.ranking[i - 1][1]
+        return self.ranking
+
+    def colley(self)-> np.array:
+        """
+        The Colley Ranking.
+        Returns the item name, ranking and the score.
+        """
+        # We first init the Colley matrix
+        self.item_mat = np.zeros(shape=(self.item_num, self.item_num))
+        self.ranking = []
+        score_list = np.ones(self.item_num)
+        for i in range(self.item_num):
+            self.item_mat[i][i]=2
+        for i in self.record_list:
+            if i[2] == i[3]:
+                # Throw away draw games
+                continue
+            winner = self.all_item.index(i[0])
+            looser = self.all_item.index(i[1])
+            score_list[winner] += 0.5
+            score_list[looser] -= 0.5
+            self.item_mat[winner][winner] += 1
+            self.item_mat[looser][looser] += 1
+            self.item_mat[winner][looser] -= 1
+            self.item_mat[looser][winner] -= 1
         # solve the matrix
         score = np.linalg.solve(self.item_mat, score_list)
         for i in range(self.item_num):

@@ -14,3 +14,4 @@ if __name__ == "__main__":
         ['d', 'a', 4, 1],
     ])
     print(a.massey())
+    print(a.colley())

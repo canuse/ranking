@@ -3,6 +3,7 @@ Scientific ranking algorithms
 
 These algorithms are available now:
 * Massey
+* Colley
 
 ## Dependence
 
