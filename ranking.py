@@ -99,3 +99,45 @@ class ranking():
                 self.record_list.append([i[0], i[1], i[2] + 0.5, i[2] - 0.5])
                 self.record_list.append([i[1], i[0], i[2] + 0.5, i[2] - 0.5])
 
+    def borda(self,ranks:list)->list:
+        """
+        borda merge
+        Input example:
+        [
+        [['A',3],['B',1],['D',2]],
+        [['A',2],['B',1],['D',4],['C',3]],
+        ]
+        :param ranks: A list of items and their rank.
+        :return: the merged ranking list
+        """
+        # first get all items
+        all_item=[]
+        scores=[]
+        length_of_rank=[]
+        for i in ranks:
+            length_of_rank.append(len(i))
+            for j in i:
+                if not j[0] in all_item:
+                    all_item.append(j[0])
+        for i in all_item:
+            scores.append([i])
+            for j in range(len(length_of_rank)):
+                scores[-1].append(-1)
+        # Do broda count
+        for i in range(len(ranks)):
+            for j in range(len(ranks[i])):
+                scores[all_item.index(ranks[i][j][0])][i+1]=ranks[i][j][1]
+            # add unranked items
+            for j in range(len(all_item)):
+                if scores[j][i+1]==-1:
+                    scores[j][i+1]=0.5*length_of_rank[i]+0.5
+        borda=[]
+        for i in scores:
+            borda.append([i[0],sum(i[1:]),0])
+        borda.sort(key=lambda x:x[1],reverse=False)
+        for i in range(len(borda)):
+            borda[i][2] = i + 1
+            if i > 0 and borda[i][1] == borda[i - 1][1]:
+                borda[i][2] = borda[i - 1][2]
+        return borda
+

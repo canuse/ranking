@@ -19,3 +19,8 @@ if __name__ == "__main__":
     print(a.massey())
     print(a.colley())
 
+    print(a.borda([
+        [['A',3],['B',1],['D',2]],
+        [['A',2],['B',1],['D',4],['C',3]],
+        [['E',1]]
+        ]))
